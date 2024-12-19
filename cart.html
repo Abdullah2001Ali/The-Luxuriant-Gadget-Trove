@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your Cart | The Luxuriant Gadget Trove</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        header img.cover-photo {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        header h1 {
+            font-size: 2.4rem;
+            margin: 0;
+            padding: 60px 20px;
+            background-color: rgba(0, 64, 128, 0.7);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .cart-item .details {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .cart-item .details h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .cart-item .details p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .cart-item .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item .quantity-controls button {
+            padding: 5px 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-item .quantity-controls button:hover {
+            background-color: #002b5c;
+        }
+
+        .summary {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .summary p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .summary strong {
+            font-size: 1.4rem;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            font-size: 1.2rem;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .checkout-btn:hover {
+            background-color: #002b5c;
+        }
+
+        .empty-cart {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="cart-cover.jpg" alt="Cart Cover Photo" class="cover-photo">
+        <h1>Your Shopping Cart</h1>
+    </header>
+    <main>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically loaded -->
+        </div>
+        <div class="summary" id="cart-summary" style="display: none;">
+            <p>Total Items: <span id="total-items">0</span></p>
+            <p>Total Price: $<span id="total-price">0.00</span></p>
+            <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        </div>
+        <p class="empty-cart" id="empty-cart-message" style="display: none;">Your cart is currently empty.</p>
+    </main>
+
+    <script>
+        const products = [
+            { name: 'Smart Watch Pro', price: 199.99, img: 'product1.jpg' },
+            { name: 'Noise-Canceling Headphones', price: 249.99, img: 'product2.jpg' },
+            { name: 'Portable Charger', price: 49.99, img: 'product3.jpg' },
+            { name: 'Smart Home Speaker', price: 129.99, img: 'product4.jpg' },
+            { name: 'Wireless Earbuds', price: 79.99, img: 'product5.jpg' },
+            { name: '4K Action Camera', price: 299.99, img: 'product6.jpg' },
+            { name: 'Fitness Tracker', price: 99.99, img: 'product7.jpg' },
+            { name: 'Virtual Reality Headset', price: 399.99, img: 'product8.jpg' },
+            { name: 'Bluetooth Speaker', price: 59.99, img: 'product9.jpg' },
+            { name: 'Gaming Mouse', price: 69.99, img: 'product10.jpg' },
+        ];
+
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalItemsElement = document.getElementById('total-items');
+            const totalPriceElement = document.getElementById('total-price');
+            const summaryElement = document.getElementById('cart-summary');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+
+            cartItemsContainer.innerHTML = '';
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                summaryElement.style.display = 'none';
+                return;
+            }
+
+            emptyCartMessage.style.display = 'none';
+            summaryElement.style.display = 'block';
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                totalPrice += item.quantity * item.price;
+
+                const cartItemHTML = `
+                    <div class="cart-item">
+                        <img src="${products[item.id].img}" alt="${item.name}">
+                        <div class="details">
+                            <h3>${item.name}</h3>
+                            <p>Price: $${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="decreaseQuantity(${item.id})">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="increaseQuantity(${item.id})">+</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.innerHTML += cartItemHTML;
+            });
+
+            totalItemsElement.textContent = totalItems;
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+
+        function increaseQuantity(id) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const product = cart.find(item => item.id === id);
+            if (product) {
+                product.quantity++;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function decreaseQuantity(id) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const product = cart.find(item => item.id === id);
+            if (product && product.quantity > 1) {
+                product.quantity--;
+            } else if (product && product.quantity === 1) {
+                const index = cart.indexOf(product);
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function proceedToCheckout() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            window.location.href = "checkout.html";
+        }
+
+        window.onload = loadCart;
+    </script>
+</body>
+</html>

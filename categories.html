@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Product Categories - The Luxuriant Gadget Trove</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            color: #333;
+            padding: 50px 20px;
+            background-color: #2E2E2E; /* Charcoal Gray Background */
+            background: url('cover-photo.jpeg') no-repeat center center;
+            background-size: cover;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(46, 46, 46, 0.6); /* Charcoal Gray overlay */
+            z-index: 1;
+        }
+
+        header h1, header p {
+            position: relative;
+            z-index: 2;
+            color: #FFD700; /* Gold color for the description text */
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 15px 0;
+        }
+
+        .navbar ul {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffcc00;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #FFFDE7; /* Soft Cream background for a light look */
+        }
+
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+            margin-left: 0;
+        }
+
+        .category-item {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-left: 0;
+        }
+
+        .category-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .category-item:hover .category-image {
+            transform: scale(1.1);
+        }
+
+        .category-info {
+            padding: 20px;
+        }
+
+        .category-info h3 {
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: #000000; /* Black color for the category name */
+        }
+
+        .category-info p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: #4B0082;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ffaa00;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #4B0082;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .category-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-list {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+            }
+
+            .navbar li {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Discover Our Exclusive Categories</h1>
+        <p>Explore the world of gadgets with categories that suit your style and needs.</p>
+    </header>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="categories.html">Categories</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="deals.html">Deals & Offers</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reviews.html">Customer Reviews</a></li>
+        </ul>
+    </nav>
+
+<section class="categories">
+        <h2>Explore Our Product Categories</h2>
+        <div class="category-list">
+            <div class="category-item">
+                <img src="laptops.jpg" alt="Laptops" class="category-image">
+                <div class="category-info">
+                    <h3>Laptops</h3>
+                    <p>Performance-driven laptops for work, gaming, and entertainment.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <img src="wearables.jpg" alt="Wearables" class="category-image">
+                <div class="category-info">
+                    <h3>Wearables</h3>
+                    <p>Smartwatches and fitness trackers for a connected lifestyle.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <img src="camera.jpg" alt="Camera" class="category-image">
+                <div class="category-info">
+                    <h3>Camera</h3>
+                    <p>Capture moments with precision using our high-quality cameras.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <img src="gaming.jpg" alt="Gaming" class="category-image">
+                <div class="category-info">
+                    <h3>Gaming</h3>
+                    <p>Elevate your gaming experience with top-notch equipment.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <img src="audio.jpg" alt="Audio" class="category-image">
+                <div class="category-info">
+                    <h3>Audio</h3>
+                    <p>Unleash rich sound with our premium audio gadgets.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <img src="accessories.jpg" alt="Accessories" class="category-image">
+                <div class="category-info">
+                    <h3>Accessories</h3>
+                    <p>Enhance your gadgets with the best accessories.</p>
+                    <a href="shop.html" class="btn">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 The Luxuriant Gadget Trove. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+

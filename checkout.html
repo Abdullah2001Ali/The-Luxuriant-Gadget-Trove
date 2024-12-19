@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checkout | The Luxuriant Gadget Trove</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        header img.cover-photo {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        header h1 {
+            font-size: 2.4rem;
+            margin: 0;
+            padding: 60px 20px;
+            background-color: rgba(0, 64, 128, 0.7);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #004080;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .order-summary {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .order-summary ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-summary ul li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .order-summary ul li strong {
+            font-weight: bold;
+        }
+
+        .total {
+            font-size: 1.4rem;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .payment-options {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .payment-options label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .payment-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .place-order-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .place-order-btn:hover {
+            background-color: #002b5c;
+        }
+
+        .empty-order {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="checkout-cover.jpg" alt="Checkout Cover Photo" class="cover-photo">
+        <h1>Checkout</h1>
+    </header>
+    <main>
+        <!-- Shipping Details -->
+        <div class="section">
+            <h2>Shipping Details</h2>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Shipping Address</label>
+                <textarea id="address" rows="4" placeholder="Enter your full address" required></textarea>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="section">
+            <h2>Order Summary</h2>
+            <div class="order-summary" id="order-summary">
+                <!-- Order items will be dynamically loaded -->
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="section">
+            <h2>Payment Method</h2>
+            <div class="payment-options">
+                <label>
+                    <input type="radio" name="payment-method" value="credit-card" required>
+                    Credit/Debit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="cash-on-delivery">
+                    Cash on Delivery
+                </label>
+            </div>
+        </div>
+
+        <!-- Place Order Button -->
+        <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+        <p id="empty-order-message" class="empty-order" style="display: none;">Your cart is empty. Please go back to the shop page.</p>
+    </main>
+
+    <script>
+        const products = [
+            { name: 'Smart Watch Pro', price: 199.99, img: 'product1.jpg' },
+            { name: 'Noise-Canceling Headphones', price: 249.99, img: 'product2.jpg' },
+            { name: 'Portable Charger', price: 49.99, img: 'product3.jpg' },
+            { name: 'Smart Home Speaker', price: 129.99, img: 'product4.jpg' },
+            { name: 'Wireless Earbuds', price: 79.99, img: 'product5.jpg' },
+            { name: '4K Action Camera', price: 299.99, img: 'product6.jpg' },
+            { name: 'Fitness Tracker', price: 99.99, img: 'product7.jpg' },
+            { name: 'Virtual Reality Headset', price: 399.99, img: 'product8.jpg' },
+            { name: 'Bluetooth Speaker', price: 59.99, img: 'product9.jpg' },
+            { name: 'Gaming Mouse', price: 69.99, img: 'product10.jpg' },
+        ];
+
+        function loadOrderSummary() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderSummaryContainer = document.getElementById('order-summary');
+            const emptyOrderMessage = document.getElementById('empty-order-message');
+
+            if (cart.length === 0) {
+                emptyOrderMessage.style.display = 'block';
+                orderSummaryContainer.style.display = 'none';
+                return;
+            }
+
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            const itemsHTML = cart.map(item => {
+                totalItems += item.quantity;
+                totalPrice += item.quantity * item.price;
+                return `
+                    <ul>
+                        <li>
+                            <span>${item.name} (x${item.quantity})</span>
+                            <strong>$${(item.quantity * item.price).toFixed(2)}</strong>
+                        </li>
+                    </ul>
+                `;
+            }).join('');
+
+            orderSummaryContainer.innerHTML = `
+                ${itemsHTML}
+                <div class="total">
+                    <p>Total Items: ${totalItems}</p>
+                    <p>Total Price: $${totalPrice.toFixed(2)}</p>
+                </div>
+            `;
+        }
+
+        function placeOrder() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+
+            if (!name || !email || !phone || !address || !paymentMethod) {
+                alert('Please fill in all the required fields and select a payment method.');
+                return;
+            }
+
+            alert(`Thank you for your order, ${name}! Payment
+has been processed through ${paymentMethod.value}. Your order will be shipped to: ${address}.`);
+            localStorage.removeItem('cart'); // Clear cart after order placement
+            window.location.href = "index.html"; // Redirect to homepage
+        }
+
+        window.onload = loadOrderSummary;
+    </script>
+</body>
+</html>
